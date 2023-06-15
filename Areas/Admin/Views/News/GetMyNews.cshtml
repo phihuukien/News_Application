@@ -1,0 +1,234 @@
+﻿
+@model IEnumerable<BTLASPMONGO.Models.DataModels.News>
+@{
+    ViewData["Title"] = "GetMyNews";
+    Layout = "~/Areas/Admin/Views/Shared/LayoutAdmin.cshtml";
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div style="text-align: center; ">
+            <a asp-action="GetMyNews">  <h1 class="m-0" style=" color: #0cb674; "> Danh sách các tin của bạn </h1></a>
+        </div>
+    </div><!-- /.container-fluid -->
+</div>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            Tổng @ViewBag.TotalNews tin
+                        </h3>
+                        <div class="card-tools">
+                            <form asp-action="GetMyNews" method="get">
+                                <div class="input-group">
+                                    <input type="search" name="search_String" id="key_search" class="form-control form-control-lg" placeholder="Search..." value="@ViewBag.search_String" onkeyup="checkKey()">
+                                    <div class="input-group-append">
+                                        <button type="submit" id="btn_search" class="btn btn-lg btn-default" onclick="checkKey()">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Tiêu đề
+                                    </th>
+                                    <th>
+                                        Ngày đăng
+                                    </th>
+                                    <th>
+                                        Lượt xem
+                                    </th>
+                                    <th style="width: 150px">Trạng thái</th>
+                                    <th style="width: 130px">Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.news_title</td>
+
+                                        <td>@String.Format("{0: HH:mm,MM/dd/yyyy}", item.published_time)</td>
+
+
+                                        <th>@item.total_views</th>
+
+                                        <td style="display:flex;">
+                                            @if (item.status == 1)
+                                            {
+                                                <span class="badge badge-warning mr-4" style="line-height:unset;">Approving</span>
+                                                
+                                            }
+                                            else if (item.status == 2)
+                                            {
+                                                <span class="badge badge-primary mr-4" style="line-height:unset;">Writting</span>
+                                            }
+                                            else if (item.status == 3)
+                                            {
+                                                <span class="badge badge-success mr-4" style="line-height:unset;">Published</span>
+                                                
+                                            }
+                                            else if (item.status == 4)
+                                            {
+                                                <span class="badge badge-danger mr-4" style="line-height:unset;">lock</span>
+                                               
+                                            }
+                                            else
+                                            {
+                                                <span class="badge badge-dark mr-4" style="line-height:unset;">No Status</span>
+                                            }
+
+
+                                        </td>
+                                        <td style="text-align:center;">
+
+
+                                            <a asp-action="Detail" asp-route-id="@item._id"> <span class="badge bg-success" data-toggle="tooltip" data-placement="top" title="View!"><i class="fas fa-eye"></i></span></a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer clearfix" style="text-align:center;">
+
+
+                        @if ((ViewBag.total_Page == 0) || (ViewBag.total_Page == 0 && ViewBag.search_String == ""))
+                        {
+                            <span style="color:red;">no documents</span>
+                        }
+                        <ul class="pagination pagination-sm m-0 float-right">
+                            @if (ViewBag.total_Page == 1)
+                            {
+                                <li class="page-item"><a class="page-link" hre="#">1</a></li>
+                            }
+                            else if (ViewBag.total_Page > 1)
+                            {
+
+                                @if (ViewBag.page != 1)
+                                {
+                                    <li class="page-item"><a asp-action="GetMyNews" asp-route-page="@(ViewBag.page-1)"  asp-route-search_String="@(ViewBag.search_String)" class="page-link">&laquo;</a></li>
+                                }
+                                @for (int i = 1; i <= ViewBag.total_Page; i++)
+                                {
+                                    <li class="page-item"><a asp-action="GetMyNews" asp-route-page="@i"  asp-route-search_String="@(ViewBag.search_String)" class="page-link  @(ViewBag.page == i?"checked_page" :"" )">@i</a></li>
+
+                                }
+                                @if (ViewBag.page != ViewBag.total_Page)
+                                {
+                                    <li class="page-item"><a class="page-link" asp-action="GetMyNews" asp-route-page="@(ViewBag.page+1)"  asp-route-search_String="@(ViewBag.search_String)">&raquo;</a></li>
+                                }
+                                <li class="ml-2 mt-1">  <span>Page: @ViewBag.page of @ViewBag.total_Page</span></li>
+
+                            }
+                        </ul>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</section>
+@section Scripts{
+    <script>
+        function checkKey() {
+            var key = document.getElementById("key_search").value;
+            if (key == "") {
+                document.querySelector("#btn_search").disabled = true;
+                $('#btn_search').keyup(function (event) {
+                    if (event.keyCode == 13) {
+                        return false
+                    }
+                });
+            } else {
+                document.querySelector("#btn_search").disabled = false;
+            }
+
+        }
+        function change_status(id) {
+            if ($('#' + id).is(":checked")) {
+                var formData = new FormData();
+                formData.append("_id", id);
+                formData.append("status", 3);
+                $.ajax({
+                    url: '/admin/news/change-status',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+
+                        setTimeout(function () {
+                            reloadwindow();
+                        }, 2000);
+                        $.Toast("update", "You Published News", "success", {
+                            has_icon: true,
+                            has_close_btn: true,
+                            stack: true,
+                            fullscreen: false,
+                            timeout: 2000,
+                            sticky: false,
+                            has_progress: true,
+                            rtl: false,
+                        });
+
+                    },
+                    error: function (msg) {
+                        console.log(msg);
+                    }
+                });
+            } else {
+                var formData = new FormData();
+                formData.append("_id", id);
+                formData.append("status", 4);
+                $.ajax({
+                    url: '/admin/news/change-status',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+
+                        setTimeout(function () {
+                            reloadwindow();
+                        }, 2000);
+                        $.Toast("update", "You Locked News", "success", {
+                            has_icon: true,
+                            has_close_btn: true,
+                            stack: true,
+                            fullscreen: false,
+                            timeout: 2000,
+                            sticky: false,
+                            has_progress: true,
+                            rtl: false,
+                        });
+                    },
+                    error: function (msg) {
+                        console.log(msg);
+                    }
+                });
+            }
+        }
+        function reloadwindow() {
+            location.reload();
+        }
+    </script>
+}
+
+
+

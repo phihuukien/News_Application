@@ -1,0 +1,23 @@
+﻿@model BTLASPMONGO.Models.DataModels.Category
+<div class="card-header">
+    <h3 class="card-title">Rename Category</h3>
+</div>
+<!-- /.card-header -->
+<!-- form start -->
+<form asp-action="SaveName" asp-area="Admin">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="_id" />
+    <div class="card-body">
+        <div class="form-group">
+            <label asp-for="category_name" for="exampleInputEmail1">New Name</label>
+            <input asp-for="category_name" type="text" class="form-control" placeholder="Enter name">
+            <span asp-validation-for="category_name" class="text-danger"></span>
+        </div>
+    </div>
+    <!-- /.card-body -->
+
+    <div class="card-footer" style="float:right;">
+        <button type="submit" class="btn btn-danger"> <a href="/admin/category" style="color:white;">Cancel</a></button>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>

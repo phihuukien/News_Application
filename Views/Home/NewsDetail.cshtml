@@ -1,0 +1,116 @@
+﻿@model BTLASPMONGO.Models.DataModels.News
+@{
+    ViewData["Title"] = "NewsDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var data = ViewData["data"] as IEnumerable<BTLASPMONGO.Models.DataModels.News>;
+}
+
+
+<!-- Breadcrumb -->
+<div class="container">
+    <div class="headline bg0 flex-wr-sb-c p-tb-8">
+        <div class="f2-s-1 p-r-30 m-tb-6">
+            <a href="index.html" class="breadcrumb-item f1-s-3 cl9">
+                Home
+            </a>
+
+            <a href="blog-list-01.html" class="breadcrumb-item f1-s-3 cl9" style="color:green; font-weight:900;">
+                @Model.news_category
+            </a>
+
+            
+        </div>
+
+        <form action="search">
+            <div class="pos-relative size-a-2 bo-1-rad-22 of-hidden bocl11 m-tb-6">
+
+                <input class="f1-s-1 cl6 plh9 s-full p-l-25 p-r-45" type="text" name="key" placeholder="Search">
+                <button type="submit" class="flex-c-c size-a-1 ab-t-r fs-20 cl2 hov-cl10 trans-03">
+                    <i class="zmdi zmdi-search"></i>
+                </button>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Content -->
+<section class="bg0  ">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8 ">
+                <div class=" p-r-0-sr991">
+                    <!-- Blog Detail -->
+                    <div >
+                        <h3 class="f1-l-3 cl2 p-b-16  respon2">
+                            @Model.news_title
+                        </h3>
+
+                        <div class="flex-wr-s-s ">
+                            <span class="f1-s-3 cl8 m-r-15">
+                                <span>
+                                    <i class="fa fa-calendar"></i>
+                                    @String.Format("{0: MM/dd/yyyy}", Model.published_time)
+                                </span>
+                            </span>
+
+                            <span class="f1-s-3 cl8 m-r-15">
+                                @Model.total_views Lượt xem
+                            </span>
+                        </div>
+
+                        <div class="wrap-pic-max-w ">
+                            @Html.Raw(Model.news_content)
+                        </div>
+                        <h3 class="mb-5" style="text-align: end; font-weight: 600; font-size: 24px; color: #309d4f;">@Model.user_id</h3>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-md-10 col-lg-4 p-b-30">
+                <div class="p-l-10 p-rl-0-sr991 ">
+                    <div class="flex-c-s p-t-8 mb-4">
+                        <a href="#">
+                            <img class="max-w-full" src="/User/images/banner-02.jpg" alt="IMG">
+                        </a>
+                    </div>
+
+                    <!-- Popular Posts -->
+                    <div class="p-b-30">
+                        <div class="how2 how2-cl4 flex-s-c">
+                            <h3 class="f1-m-2 cl3 tab01-title">
+                                Cùng chuyên mục
+                            </h3>
+                        </div>
+
+                        <ul class="p-t-35">
+                            @foreach (var item in data) {
+                            <li class="flex-wr-sb-s p-b-30">
+                                <a  asp-action="NewsDetail" asp-route-id="@item._id" class="size-w-10 wrap-pic-w hov1 trans-03">
+                                    <img src="/@item.picture" alt="IMG">
+                                </a>
+
+                                <div class="size-w-11">
+                                    <h6 class="p-b-4">
+                                        <a  asp-action="NewsDetail" asp-route-id="@item._id" class="f1-s-5 cl3 hov-cl10 trans-03">
+                                            @item.news_title
+                                        </a>
+                                    </h6>
+                                </div>
+                            </li>
+                            }
+
+                        </ul>
+                    </div>
+
+               
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

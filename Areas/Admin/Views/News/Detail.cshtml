@@ -1,0 +1,91 @@
+﻿@model BTLASPMONGO.Models.DataModels.News
+
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Areas/Admin/Views/Shared/LayoutAdmin.cshtml";
+}
+
+
+<section class="content mt-4">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title" style="font-family: system-ui;">
+                            News Detail  |
+                            @if (Model.status == 1)
+                            {
+                                <span class="badge badge-warning mr-4" style="line-height:unset;">Approving</span>
+                            }
+                            else if (Model.status == 2)
+                            {
+                                <span class="badge badge-primary mr-4" style="line-height:unset;">Writting</span>
+                            }
+                            else if (Model.status == 3)
+                            {
+                                <span class="badge badge-success mr-4" style="line-height:unset;">Published</span>
+                            }
+                            else if (Model.status == 4)
+                            {
+                                <span class="badge badge-danger mr-4" style="line-height:unset;">lock</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-dark mr-4" style="line-height:unset;">No Status</span>
+                            }
+                        </h3>
+                        <span class="ml-3 mr-3"> <span class="text-purple">Creation time:</span>@String.Format("{0: HH:mm , MM/dd/yyyy}", Model.published_time)  </span> | 
+                        <span class="ml-3 "><span class="text-purple"> Last modification time:</span> @Html.DisplayFor(model => model.last_modification_time)</span>
+                        <div class="card-tools">
+                            <a asp-action="News"> <span class="badge bg-gradient-green" data-toggle="tooltip" data-placement="top" title="Back To News List!"><i class="fas fa-list" style="font-size:25px;"></i></span></a> |
+                            <a asp-action="Edit" asp-route-id="@Model._id"> <span class="badge bg-info" data-toggle="tooltip" data-placement="top" title="Edit!"><i class="fas fa-edit" style="font-size:25px;"></i></span></a>
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-4">
+                                <img style="width:100%;" src="/@(Model.picture)" alt="not found image" class="img-fluid">
+                            </div>
+                            <div class="col-8">
+                                <span class="text-red">@Html.DisplayFor(model => model.news_category)</span>
+                                <h2 class="lead mb-0"><b> @Html.DisplayFor(model => model.news_title)</b></h2>
+                                <div>
+                                    <span class="text-info">Published time</span> :
+                                    @if (Model.published_time != null)
+                                    {
+                                        @Html.DisplayFor(model => model.published_time)
+                                    }
+                                    else
+                                    {
+                                        <span>00/00/0000</span>
+                                    }
+                                    <span class="badge badge-info ml-2 mb-1" style="line-height:unset;">@Html.DisplayFor(model => model.total_views) (Views)</span>
+                                </div>
+                                <p class="text-muted text-sm">@Html.DisplayFor(model => model.news_excerpt) </p>
+                                <h2 class="lead mb-0 " style="position: absolute; bottom: 0; right: 139px;"><b>@Html.DisplayFor(model => model.user_id) </b></h2>
+                            </div>
+                        </div>
+                        <div style="width: 77%; border: 1px solid #6d6a6a6b; margin: auto;"></div>
+                        <h5 class="mb-0">
+                            Content
+                        </h5>
+                        <div class="card p-2">
+                            @Html.Raw(Model.news_content)
+                        </div>
+                    </div>
+                    <div class="card-footer clearfix">
+
+                        <a asp-action="News"> <span class="badge bg-gradient-green" data-toggle="tooltip" data-placement="top" title="Back To News List!"><i class="fas fa-list" style="font-size:25px;"></i></span></a> |
+                        <a asp-action="Edit" asp-route-id="@Model._id"> <span class="badge bg-info" data-toggle="tooltip" data-placement="top" title="Edit!"><i class="fas fa-edit" style="font-size:25px;"></i></span></a>
+
+                    </div>
+                </div>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</section>

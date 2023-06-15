@@ -1,0 +1,150 @@
+﻿
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Areas/Admin/Views/Shared/LayoutAdmin.cshtml";
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2" style="justify-content:center;">
+            <div class="col-sm-6">
+                <h1 class="m-0" style="text-align:center;">Tổng Quan</h1>
+            </div><!-- /.col -->
+
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>@ViewBag.NewsTotal</h3>
+
+                        <p>Tổng toàn bộ tin</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+                    </div>
+                    <a href="/admin/news" class="small-box-footer">Thêm thông tin <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3>@ViewBag.NewsTotalApproving</h3>
+
+                        <p>Tin đang chờ duyệt</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                    </div>
+                    @if (@ViewBag.NewsTotalApproving > 0)
+                    {
+                        <a href="/Admin/news/status/1" class="small-box-footer">Thêm thông tin <i class="fas fa-arrow-circle-right"></i></a>
+                    }
+                    else
+                    {
+                        <a class="small-box-footer">Thêm thông tin <i class="fas fa-arrow-circle-right"></i></a>
+                    }
+
+
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-danger">
+                    <div class="inner">
+                        <h3>@ViewBag.NewsTotalLocked</h3>
+
+                        <p>Tin đã khóa</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-lock" aria-hidden="true"></i>
+                    </div>
+                    @if (@ViewBag.NewsTotalLocked > 0)
+                    {
+                        <a href="/Admin/news/status/4 " class="small-box-footer">Thêm thông tin <i class="fas fa-arrow-circle-right"></i></a>
+                    }
+                    else
+                    {
+                        <a class="small-box-footer">Thêm thông tin <i class="fas fa-arrow-circle-right"></i></a>
+                    }
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-warning">
+                    <div class="inner">
+                        <h3>@ViewBag.NewsTotalWriting</h3>
+
+                        <p>Tin đang viết</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-pen-square" aria-hidden="true"></i>
+                    </div>
+                    @if (@ViewBag.NewsTotalWriting > 0)
+                    {
+                        <a href="/Admin/news/status/2" class="small-box-footer">Thêm thông tin <i class="fas fa-arrow-circle-right"></i></a>
+                    }
+                    else
+                    {
+                        <a  class="small-box-footer">Thêm thông tin <i class="fas fa-arrow-circle-right"></i></a>
+                    }
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-gradient-maroon">
+                    <div class="inner">
+                        <h3>@ViewBag.NewsTotalPublished</h3>
+
+                        <p>Tin đã đăng</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                    </div>
+                    @if (@ViewBag.NewsTotalPublished > 0)
+                    {
+                        <a href="/Admin/news/status/3 " class="small-box-footer">Thêm thông tin <i class="fas fa-arrow-circle-right"></i></a>
+                    }
+                    else
+                    {
+                        <a  class="small-box-footer">Thêm thông tin <i class="fas fa-arrow-circle-right"></i></a>
+                    }
+                </div>
+            </div>
+            <!-- ./col -->
+            <!-- ./col -->
+        </div>
+        <!-- /.row -->
+
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box">
+                    <span class="info-box-icon bg-info elevation-1">  <i class="fa fa-newspaper-o" aria-hidden="true"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Tin đã đăng hôm nay</span>
+                        <span class="info-box-number">
+                            @ViewBag.NewsTotalToday
+                        </span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+     
+        </div>
+
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->

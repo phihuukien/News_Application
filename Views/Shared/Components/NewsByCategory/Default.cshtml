@@ -1,0 +1,56 @@
+﻿@model IEnumerable<BTLASPMONGO.Models.DataModels.News>
+@{ 
+    var data_first = ViewData["data_first_cat"] as BTLASPMONGO.Models.DataModels.News;
+
+}
+   <!-- Tab panes -->
+<div class="tab-content p-t-30">
+    <!-- - -->
+    <div class="tab-pane fade show active" id="tab2-1" role="tabpanel">
+        <div class="row">
+            @if (data_first !=null)
+            {
+                <div class="col-sm-5 p-r-25 p-r-15-sr991">
+                    <!-- Item post -->
+                    <div class="m-b-30">
+                        <a asp-action="NewsDetail" asp-route-id="@data_first._id" class="wrap-pic-w hov1 trans-03">
+                            <img src="/@data_first.picture" alt="IMG">
+                        </a>
+
+                        <div class="p-t-20">
+                            <h5 class="p-b-5">
+                                <a asp-action="NewsDetail" asp-route-id="@data_first._id" class="f1-m-3 cl2 hov-cl10 trans-03">
+                                    @data_first.news_title
+                                </a>
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+            }
+            @if (Model.Count() > 0)
+                {
+                    <div class="col-sm-7 p-0">
+                        <!-- Item post -->
+                        @foreach (var news in Model)
+                        {
+                            <div class="flex-wr-sb-s m-b-30">
+                                <a asp-action="NewsDetail" asp-route-id="@news._id" class="size-w-1 wrap-pic-w hov1 trans-03">
+                                    <img src="/@news.picture" alt="IMG">
+                                </a>
+
+                                <div class="size-w-2">
+                                    <h5 class="p-b-5">
+                                        <a asp-action="NewsDetail" asp-route-id="@news._id" class="f1-s-5 cl3 hov-cl10 trans-03">
+                                            @news.news_title
+                                        </a>
+                                    </h5>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                }
+            </div>
+    </div>
+</div>
+

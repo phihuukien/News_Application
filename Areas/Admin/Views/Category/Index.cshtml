@@ -1,0 +1,228 @@
+﻿@model IEnumerable<BTLASPMONGO.Models.DataModels.Category>
+@{
+    ViewData["Title"] = "Category";
+    Layout = "~/Areas/Admin/Views/Shared/LayoutAdmin.cshtml";
+}
+
+<div class="content-header">
+    <div class="container">
+        <div class="mb-2" style="text-align: center; ">
+            <a href="/admin/category">  <h1 class="m-0" style=" color: #0cb674; "> NEWS CATEGORY</h1></a>
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-7">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Category Table</h3>
+                        <div class="card-tools">
+                            <form action="/admin/category" method="get">
+                                <div class="input-group">
+                                    <input type="search" name="name" id="key_search" class="form-control form-control-lg" placeholder="Search..." value="@ViewBag.name" onkeyup="checkKey()">
+                                    <div class="input-group-append">
+                                        <button type="submit" id="btn_search" class="btn btn-lg btn-default" onclick="checkKey()">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Catecory Name 
+                                        <span style=" float: right;"> 
+                                            <a href="/admin/category?sort=ASC@(ViewBag.page > 1 ?"&page=":"")@(ViewBag.page >1?ViewBag.page:"")@(ViewBag.name !=""?"&name=":"")@(ViewBag.name !=""?ViewBag.name:"")" style=" color:gray;">
+                                                @if (ViewBag.sort == "ASC")
+                                                {
+                                                    <i class="fas fa-arrow-up text-success"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i class="fas fa-arrow-up"></i>
+                                                }
+                                            </a> 
+                                            <a href="/admin/category?sort=DESC@(ViewBag.page > 1 ?"&page=":"")@(ViewBag.page >1?ViewBag.page:"")@(ViewBag.name !=""?"&name=":"")@(ViewBag.name !=""?ViewBag.name:"")" class="ml-1" style="color: gray;">
+                                                @if (ViewBag.sort == "DESC")
+                                                {
+                                                    <i class="fas fa-arrow-down text-success"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i class="fas fa-arrow-down "></i>
+                                                }
+                                            </a>
+                                        </span>
+                                    </th>
+                                    <th>Status</th>
+                                    <th style="width: 80px">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <a style="color: #4c4646;" href="/admin/news/bycategory/@item._id"> @item.category_name</a>   @await Component.InvokeAsync("TotalNewsByCategory", new { cate_id = item._id}) </td>
+                                        <td>
+                                            <div class="custom-control custom-switch" title="@(item.status == true ? "Click to UnActive!" : "Click to Active!")">
+                                                <input type="checkbox" onchange="change_status('@item._id')" class="custom-control-input" id="@item._id" @(item.status == true ? "checked" : "")>
+                                                <label class="custom-control-label" for="@item._id"></label>
+                                            </div>
+                                         
+                                        </td>
+                                        <td style="text-align:center;">
+                                            <a href="/admin/category/delete/@item._id" onclick="return confirm('Bạn chắc chắn muốn xóa danh mục này?')" data-toggle="tooltip" data-placement="top" title="Xóa!"> <span class="badge bg-danger"><i class="far fa-trash-alt"></i></span></a>
+                                            <a onclick="rename('@item._id')" data-toggle="tooltip" data-placement="top" title="Đổi tên!"> <span class="badge bg-success"><i class="fas fa-edit"></i></span></a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer clearfix" style="text-align:center;">
+
+                        @if ((ViewBag.total_Page == 0) || (ViewBag.total_Page == 0 && ViewBag.name == ""))
+                        {
+                            <span style="color:red;">no documents</span>
+                        }
+                        <ul class="pagination pagination-sm m-0 float-right">
+                            @if (ViewBag.total_Page == 1)
+                            {
+                                <li class="page-item"><a class="page-link" hre="#">1</a></li>
+                            }
+                            else if (ViewBag.total_Page > 1)
+                            {
+
+                                @if (ViewBag.page != 1)
+                                {
+                                    <li class="page-item"><a class="page-link" asp-action="Index" asp-route-sort="@ViewBag.sort"  asp-route-page="@(ViewBag.page-1)" asp-route-name="@ViewBag.name">&laquo;</a></li>
+                                }
+                                @for (int i = 1; i <= ViewBag.total_Page; i++)
+                                {
+                                    <li class="page-item"><a class="page-link  @(ViewBag.page == i? "checked_page" :"" )" asp-action="Index" asp-route-sort="@ViewBag.sort"  asp-route-page="@i" asp-route-name="@ViewBag.name" >@i</a></li>
+
+                                }
+                                @if (ViewBag.page != ViewBag.total_Page)
+                                {
+                                    <li class="page-item"><a class="page-link" asp-action="Index" asp-route-sort="@ViewBag.sort"  asp-route-page="@(ViewBag.page+1)" asp-route-name="@ViewBag.name">&raquo;</a></li>
+                                }
+                                    <li class="ml-2 mt-1">  <span>Page: @ViewBag.page of @ViewBag.total_Page</span></li>                       
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <!-- /.card -->
+
+            </div>
+            <!-- /.col -->
+            <div class="col-md-5">
+                <div class="card card-primary" id="category_partial">
+
+                </div>
+
+                <!-- /.card -->
+
+            </div>
+            <!-- /.col -->
+        </div>
+    </div>
+</section>
+@section Scripts{
+    <script>
+
+        function checkKey() {
+            var key = document.getElementById("key_search").value;
+            if (key == "") {
+                document.querySelector("#btn_search").disabled = true;
+                $('#btn_search').keyup(function (event) {
+                    if (event.keyCode == 13) {
+                        return false
+                    }
+                });
+            } else {
+                document.querySelector("#btn_search").disabled = false;
+            }
+
+        }
+        $(document).ready(function () {
+            $('#category_partial').load("/admin/category/create");
+        });
+
+        function rename(id) {
+            $.ajax({
+                url: '/admin/category/rename?id=' + id,
+                type: 'GET',
+                success: function (res) {
+                    $('#category_partial').html(res);
+                }
+            })
+            $('html, body').animate({ scrollTop: 0 }, 300);
+        };
+
+        function change_status(id) {
+            if ($('#' + id).is(":checked")) {
+                var formData = new FormData();
+                formData.append("_id", id);
+                formData.append("status", true);
+                $.ajax({
+                    url: '/admin/category/change-status',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        $.Toast("update", data.message, "success", {
+                            has_icon: true,
+                            has_close_btn: true,
+                            stack: true,
+                            fullscreen: false,
+                            timeout: 4000,
+                            sticky: false,
+                            has_progress: true,
+                            rtl: false,
+                        });
+                    },
+                    error: function (msg) {
+                        console.log(msg);
+                    }
+                });
+            } else {
+                var formData = new FormData();
+                formData.append("_id", id);
+                formData.append("status", false);
+                $.ajax({
+                    url: '/admin/category/change-status',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        $.Toast("update", data.message, "success", {
+                            has_icon: true,
+                            has_close_btn: true,
+                            stack: true,
+                            fullscreen: false,
+                            timeout: 2000,
+                            sticky: false,
+                            has_progress: true,
+                            rtl: false,
+                        });
+                    },
+                    error: function (msg) {
+                        console.log(msg);
+                    }
+                });
+            }
+        }
+    </script>
+}
+
+

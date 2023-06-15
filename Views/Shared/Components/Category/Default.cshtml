@@ -1,0 +1,22 @@
+﻿@model IEnumerable<BTLASPMONGO.Models.DataModels.Category>
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@foreach (var item in Model)
+{
+
+
+    if (HttpContextAccessor.HttpContext.Session.GetString("activeBy") == item.category_name)
+    {
+        <li class="mega-menu-item main-menu-active">
+            <a asp-action="GetNewsByCategory" asp-route-id="@item._id">@item.category_name</a>
+        </li>
+    }
+    else
+    {
+
+        <li class="mega-menu-item ">
+            <a asp-action="GetNewsByCategory" asp-route-id="@item._id">@item.category_name</a>
+        </li>
+
+    }
+}

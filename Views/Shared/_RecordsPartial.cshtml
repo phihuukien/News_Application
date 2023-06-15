@@ -1,0 +1,35 @@
+﻿@model IEnumerable<BTLASPMONGO.ViewModel.NewsViewModel>
+@foreach (var item in Model)
+{
+    <div class="flex-wr-sb-s" style="padding:2px">
+        <a  asp-action="NewsDetail" asp-route-id="@item._id" class="size-w-8 wrap-pic-w hov1 trans-03 w-full-sr575 m-b-25">
+            <img src="@item.picture" alt="@item.picture">
+        </a>
+
+        <div class="size-w-9 w-full-sr575 m-t-5">
+            <h5>
+                <a asp-action="NewsDetail" asp-route-id="@item._id" class="f1-l-1 cl2 hov-cl10 trans-03 respon2" style="font-size:18px; font-weight:900;">
+                    @item.news_title
+                </a>
+            </h5>
+
+            <div class="cl8 p-b-10">
+                <a  asp-action="GetNewsByCategory" asp-route-id="@item.categoryId"class="f1-s-4 cl8 hov-cl10 trans-03">
+                    @item.news_category
+                </a>
+
+                <span class="f1-s-3 m-rl-3">
+                    -
+                </span>
+
+                <span class="f1-s-3">
+                    @String.Format("{0: MM/dd/yyyy}", item.published_time)
+                </span>
+            </div>
+
+            <p class="f1-s-1 cl6 p-b-24">
+                @item.news_excerpt
+            </p>
+        </div>
+    </div>
+}

@@ -1,0 +1,237 @@
+﻿@model IEnumerable<BTLASPMONGO.ViewModel.NewsViewModel>
+@{
+    ViewData["Title"] = "Home Page";
+    var data_first = ViewData["data_first"] as BTLASPMONGO.ViewModel.NewsViewModel;
+    var Categories = ViewData["Categories"] as IEnumerable<BTLASPMONGO.Models.DataModels.Category>;
+    var DataByCate = ViewData["DataByCate"] as IEnumerable<BTLASPMONGO.Models.DataModels.News>;
+    var DataManyViews = ViewData["dataManyViews"] as IEnumerable<BTLASPMONGO.Models.DataModels.News>;
+}
+<div class="container">
+    <div class="bg0 flex-wr-sb-c p-rl-20 p-tb-8">
+        <div class="f2-s-1 p-r-30 size-w-0 m-tb-6 flex-wr-s-c">
+
+        </div>
+
+        <form action="search">
+            <div style="width:300px;" class="pos-relative size-a-2 bo-1-rad-22 of-hidden bocl11 m-tb-6">
+                <input class="f1-s-1 cl6 plh9 s-full p-l-25 p-r-45" type="text" name="key" id="key_search" placeholder="Search" onkeyup="checkKey()">
+                <button type="submit" class="flex-c-c size-a-1 ab-t-r fs-20 cl2 hov-cl10 trans-03" id="btn_search" onclick="checkKey()">
+                    <i class="zmdi zmdi-search"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Post -->
+<section class="bg0 ">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8">
+                <div>
+                    <!-- Entertainment -->
+                    <div class="tab01 p-b-20" id="records">
+                        <div class="tab01-head how2 how2-cl1 bocl12 flex-s-c m-r-10 m-r-0-sr991">
+                            <!-- Brand tab -->
+                            <h3 class="f1-m-2 cl12 tab01-title">
+                                Bài mới nhất
+                            </h3>
+                        </div>
+                        <!-- Tab panes -->
+                        <div class="tab-content p-t-35">
+                            <!-- - -->
+                            <div class="tab-pane fade show active" id="tab1-1" role="tabpanel">
+                                <div class="row">
+                                    <div class="col-sm-12 p-l-46 p-r-46 p-r-15-sr991">
+                                        <!-- Item post -->
+                                        <div class="m-b-30">
+                                            <a asp-action="NewsDetail" asp-route-id="@data_first._id" class="wrap-pic-w hov1 trans-03">
+                                                <img src="/@data_first.picture" alt="IMG">
+                                            </a>
+
+                                            <div class="p-t-20">
+                                                <h5 class="p-b-5">
+                                                    <a asp-action="NewsDetail" asp-route-id="@data_first._id" class="f1-m-3 cl2 hov-cl10 trans-03" style="font-weight:900;">
+                                                        @data_first.news_title
+                                                    </a>
+                                                </h5>
+
+                                                <span class="cl8">
+                                                    <a asp-action="GetNewsByCategory" asp-route-id="@data_first.categoryId" class="f1-s-4 cl8 hov-cl10 trans-03">
+                                                        @data_first.news_category
+                                                    </a>
+
+                                                    <span class="f1-s-3 m-rl-3">
+                                                        -
+                                                    </span>
+
+                                                    <span class="f1-s-3">
+                                                        @String.Format("{0: MM/dd/yyyy}", data_first.published_time)
+                                                    </span>
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <p> @data_first.news_excerpt</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @foreach (var item in Model)
+                        {
+                            <div class="flex-wr-sb-s" style="padding:2px">
+                                <a asp-action="NewsDetail" asp-route-id="@item._id" class="size-w-8 wrap-pic-w hov1 trans-03 w-full-sr575 m-b-25">
+                                    <img src="@item.picture" alt="@item.picture">
+                                </a>
+
+                                <div class="size-w-9 w-full-sr575 m-t-5">
+                                    <h5>
+                                        <a asp-action="NewsDetail" asp-route-id="@item._id" class="f1-l-1 cl2 hov-cl10 trans-03 respon2" style="font-size:18px; font-weight:900;">
+                                            @item.news_title
+                                        </a>
+                                    </h5>
+
+                                    <div class="cl8 p-b-10">
+                                        <a asp-action="GetNewsByCategory" asp-route-id="@item.categoryId" class="f1-s-4 cl8 hov-cl10 trans-03">
+                                            @item.news_category
+                                        </a>
+
+                                        <span class="f1-s-3 m-rl-3">
+                                            -
+                                        </span>
+
+                                        <span class="f1-s-3">
+                                            @String.Format("{0: MM/dd/yyyy}", item.published_time)
+                                        </span>
+                                    </div>
+
+                                    <p class="f1-s-1 cl6 p-b-24">
+                                        @item.news_excerpt
+                                    </p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                </div>
+                <button onclick="showMore()" id="showMoreButton" style="width:20%;" class="mb-5 flex-c-c size-a-13 bo-all-1 bocl11 f1-m-6 cl6 hov-btn1 trans-03 mx-auto rounded border-success">
+                    Load More
+                </button>
+            </div>
+
+            <div class="col-md-10 col-lg-4">
+                <div class="p-l-10 p-rl-0-sr991 p-b-20">
+                    <!--  -->
+                    <div>
+                        <div class="how2 how2-cl4 flex-s-c">
+                            <h3 class="f1-m-2 cl3 tab01-title">
+                                Xem nhiều
+                            </h3>
+                        </div>
+                        <ul class="p-t-35">
+                            @foreach (var item in DataManyViews)
+                            {
+                                <li class="flex-wr-sb-s p-b-30">
+                                    <a asp-action="NewsDetail" asp-route-id="@item._id" class="size-w-10 wrap-pic-w hov1 trans-03">
+                                        <img src="/@item.picture" alt="IMG">
+                                    </a>
+
+                                    <div class="size-w-11">
+                                        <h6 class="p-b-4">
+                                            <a asp-action="NewsDetail" asp-route-id="@item._id" class="f1-s-5 cl3 hov-cl10 trans-03">
+                                                @item.news_title
+                                            </a>
+                                        </h6>
+                                    </div>
+                                </li>
+                            }
+
+
+
+                        </ul>
+                    </div>
+
+                    <!--  -->
+                    <div class="flex-c-s p-t-8">
+                        <a href="#">
+                            <img class="max-w-full" src="/User/images/banner-02.jpg" alt="IMG">
+                        </a>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+                @foreach (var item in Categories)
+                {
+                    <div class="col-md-10 col-lg-6">
+                        <!-- Business -->
+                        <div class="tab01 p-b-20">
+                            <div class="tab01-head how2 how2-cl2 bocl12 flex-s-c m-r-10 m-r-0-sr991">
+
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li class="nav-item">
+                                        <a asp-action="GetNewsByCategory" asp-route-id="@item._id" class="nav-link active">
+                                            <h3 class="f1-m-2 cl3 tab01-title">@item.category_name</h3>
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                <!--  -->
+                                <a asp-action="GetNewsByCategory" asp-route-id="@item._id" class="tab01-link f1-s-1 cl9 hov-cl10 trans-03">
+                                    View all
+                                    <i class="fs-12 m-l-5 fa fa-caret-right"></i>
+                                </a>
+                            </div>
+
+                            @await Component.InvokeAsync("NewsByCategory", new { cate_id = item._id })
+                        </div>
+                    </div>
+                }
+        </div>
+    </div>
+    <input type="hidden" id="total_Page" value="@ViewBag.total_Page" />
+</section>
+
+@section Scripts{
+    <script>
+
+        function checkKey() {
+            var key = document.getElementById("key_search").value;
+            if (key == "") {
+                document.querySelector("#btn_search").disabled = true;
+                $('#btn_search').keyup(function (event) {
+                    if (event.keyCode == 13) {
+                        return false
+                    }
+                });
+            } else {
+                document.querySelector("#btn_search").disabled = false;
+            }
+
+        }
+        var page = 2;
+        var pageSize = 5;
+        function showMore() {
+
+            $.ajax({
+                url: 'get-more-records?page=' + page + '&pageSize=' + pageSize,
+                success: function (data) {
+                    $("#records").append(data);
+                    page++;
+                }
+            });
+            if (document.getElementById("total_Page").value == page) {
+                document.getElementById("showMoreButton").style.display = "none";
+            }
+        }
+    </script>
+}
+
+
+
+

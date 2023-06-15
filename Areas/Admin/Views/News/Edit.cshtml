@@ -1,0 +1,150 @@
+﻿@model BTLASPMONGO.Models.DataModels.News
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/LayoutAdmin.cshtml";
+}
+
+<div class="content-header">
+    <div class="container">
+        <div class="mb-2" style="text-align: center; color: #0cb674;">
+            <h1 class="m-0">FORM EDIT NEWS </h1>
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<section class="content">
+    <div class="container-fluid">
+        <div class="card card-default">
+
+            <!-- /.card-header -->
+            <div class="card-body" style="display: block;">
+                <form asp-action="Update" asp-area="Admin" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="form-group">
+                            <input type="hidden" asp-for="_id" class="form-control" />
+                            <input type="hidden" asp-for="published_time" class="form-control" />
+                            <input type="hidden" asp-for="total_views" class="form-control" />
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="news_title">News Title</label>
+                                <input type="text" asp-for="news_title" class="form-control" placeholder="Enter title">
+                                <span asp-validation-for="news_title" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="news_excerpt">News Excerpt</label>
+                                <textarea class="form-control" asp-for="news_excerpt" rows="3" placeholder="Enter ..."></textarea>
+                                <span asp-validation-for="news_excerpt" class="text-danger"></span>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>News Type</label>
+                                        <select asp-for="news_category" asp-items="ViewBag.CategoryId" class="form-control select2" style="width: 100%;">
+                                        </select>
+                                    </div>
+                                    <div class="form-group imgNews">
+                                        <label asp-for="picture" class="floating-label">News Picture</label>
+                                        <label for="image" style="width:100%;">
+                                            <img alt=""
+                                                 style="height: 270px; width: 100%; object-fit: cover;"
+                                                 src="/@ViewBag.Picture">
+                                        </label>
+                                        <input type="file" name="image" id="image" hidden />
+                                        <input type="text" name="OldImage" hidden value="@ViewBag.Picture" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Status</label>
+                                        <div style="display:flex;">
+                                            @if (Model.status == 1)
+                                            {
+                                                <div class="custom-control custom-radio">
+                                                    <input class="custom-control-input" type="radio" asp-for="status" value="1" id="customRadio1">
+                                                    <label for="customRadio1" class="custom-control-label">Approving</label>
+                                                </div>
+                                                <div class="custom-control custom-radio ml-5">
+                                                    <input class="custom-control-input" type="radio" asp-for="status" value="3" id="customRadio3">
+                                                    <label for="customRadio3" class="custom-control-label">Published</label>
+                                                </div>
+                                            }
+                                            else if (Model.status == 2)
+                                            {
+                                                <div class="custom-control custom-radio">
+                                                    <input class="custom-control-input" type="radio" asp-for="status" value="1" id="customRadio1">
+                                                    <label for="customRadio1" class="custom-control-label">Done</label>
+                                                </div>
+                                                <div class="custom-control custom-radio ml-5">
+                                                    <input class="custom-control-input" type="radio" asp-for="status" value="2" id="customRadio2">
+                                                    <label for="customRadio2" class="custom-control-label">Writting</label>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="custom-control custom-radio">
+                                                    <input class="custom-control-input" type="radio" asp-for="status" value="3" id="customRadio3">
+                                                    <label for="customRadio3" class="custom-control-label">Published</label>
+                                                </div>
+                                                <div class="custom-control custom-radio ml-5">
+                                                    <input class="custom-control-input" type="radio" asp-for="status" value="4" id="customRadio4">
+                                                    <label for="customRadio4" class="custom-control-label">Lock</label>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>News Content</label>
+                                <textarea id="summernote" asp-for="news_content">
+                             
+                              </textarea>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success "><i class="fas fa-save mr-2"></i>Update</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </form>
+                <!-- /.row -->
+
+            </div>
+            <!-- /.card-body -->
+
+        </div>
+    </div>
+</section>
+@section Scripts{
+    <script>
+            var img = document.querySelector('#image')
+            var showimg = document.querySelector('.imgNews img')
+
+            img.addEventListener('change', function () {
+                var file = img.files[0]
+                showimg.src = URL.createObjectURL(file)
+            })
+
+            $(function () {
+                //Initialize Select2 Elements
+                $('.select2').select2()
+
+                //Initialize Select2 Elements
+                $('.select2bs4').select2({
+                    theme: 'bootstrap4'
+                })
+            // Summernote
+            $('#summernote').summernote()
+
+            // CodeMirror
+
+        })
+    </script>
+}
+
+

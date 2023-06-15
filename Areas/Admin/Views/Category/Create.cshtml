@@ -1,0 +1,23 @@
+﻿@model BTLASPMONGO.Models.DataModels.Category
+<div class="card-header">
+    <h3 class="card-title">Add New Category</h3>
+</div>
+<!-- /.card-header -->
+<!-- form start -->
+<form asp-action="Save">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="card-body">
+        <div class="form-group">
+            <label asp-for="category_name" for="exampleInputEmail1">Category Name</label>
+            <input asp-for="category_name" type="text" class="form-control" value="@TempData["name"]" placeholder="Enter name">
+            <span asp-validation-for="category_name" class="text-danger"></span>
+            <span style="color:red;" class="text-danger">@TempData["error"] @TempData["empty"]</span>
+        </div>
+    </div>
+    <!-- /.card-body -->
+
+    <div class="card-footer" style="float:right;">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>

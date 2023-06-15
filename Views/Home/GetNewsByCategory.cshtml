@@ -1,0 +1,235 @@
+﻿@model IEnumerable<BTLASPMONGO.Models.DataModels.News>
+@{
+    ViewData["Title"] = "NewsByCategory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var data_first = ViewData["data_first"] as BTLASPMONGO.Models.DataModels.News;
+    var data_three = ViewData["data_three"] as IEnumerable<BTLASPMONGO.Models.DataModels.News>;
+    var dataByTotalView = ViewData["dataByTotalView"] as IEnumerable<BTLASPMONGO.Models.DataModels.News>;
+}
+
+<!-- Breadcrumb -->
+<div class="container">
+    <div class="bg0 flex-wr-sb-c  p-tb-8">
+        <div class="f2-s-1 p-r-30 m-tb-6">
+            <a href="index.html" class="breadcrumb-item f1-s-3 cl9">
+                Home
+            </a>
+
+            <span style="color:green; font-weight:900;" class=" breadcrumb-item f1-s-3 ">
+                @ViewBag.CatName
+            </span>
+        </div>
+
+        <form action="search">
+            <div class="pos-relative size-a-2 bo-1-rad-22 of-hidden bocl11 m-tb-6">
+
+                <input class="f1-s-1 cl6 plh9 s-full p-l-25 p-r-45" type="text" name="key" placeholder="Search">
+                <button type="submit" class="flex-c-c size-a-1 ab-t-r fs-20 cl2 hov-cl10 trans-03">
+                    <i class="zmdi zmdi-search"></i>
+                </button>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Page heading -->
+<div class="container p-t-4 p-b-10">
+    <h5 style="font-size:25px;" class="f1-l-5 cl2">
+        Bài mới nhất
+    </h5>
+    <hr class="m-0" />
+</div>
+
+<!-- Post -->
+<section class="bg0 p-b-55">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8 p-b-80">
+                <div class="p-r-10 p-r-0-sr991">
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <!-- - -->
+                        <div class="tab-pane fade show active" id="tab2-1" role="tabpanel">
+                            <div class="row">
+                                <div class="col-sm-6 p-r-20 p-r-15-sr991">
+                                    <!-- Item post -->
+                                    @if (data_first != null)
+                                    {
+
+                                        <div class="m-b-30">
+                                            <a asp-action="NewsDetail" asp-route-id="@data_first._id" class="wrap-pic-w hov1 trans-03">
+                                                <img src="/@data_first.picture" alt="IMG">
+                                            </a>
+
+                                            <div class="p-t-20">
+                                                <h5 class="p-b-5">
+                                                    <a asp-action="NewsDetail" asp-route-id="@data_first._id" class="f1-m-3 cl2 hov-cl10 trans-03">
+                                                        @data_first.news_title
+                                                    </a>
+                                                </h5>
+
+                                                <span class="cl8">
+
+                                                    <span class="f1-s-3">
+                                                        <i class="fa fa-calendar"></i>
+                                                        -
+                                                        @String.Format("{0: MM/dd/yyyy}", data_first.published_time)
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="col-sm-6 p-0 ">
+                                    <!-- Item post -->
+                                    @foreach (var item in data_three)
+                                    {
+                                        <div class="flex-wr-sb-s m-b-30">
+                                            <a asp-action="NewsDetail" asp-route-id="@item._id" class="size-w-1 wrap-pic-w hov1 trans-03">
+                                                <img src="/@item.picture" alt="IMG1">
+                                            </a>
+
+                                            <div class="size-w-2">
+                                                <h5 class="p-b-5">
+                                                    <a asp-action="NewsDetail" asp-route-id="@item._id" class="f1-s-5 cl3 hov-cl10 trans-03">
+                                                        @item.news_title
+                                                    </a>
+                                                </h5>
+
+                                                <span class="cl8">
+
+                                                    <span class="f1-s-3">
+                                                        <i class="fa fa-calendar"></i>
+                                                        @String.Format("{0: MM/dd/yyyy}", item.published_time)
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="m-t--40 p-b-40" id="records">
+                        <!-- Item post -->
+                        @foreach (var item in Model)
+                        {
+                            <div class="flex-wr-sb-s p-t-40 p-b-15 how-bor2">
+                                <a asp-action="NewsDetail" asp-route-id="@item._id" class="size-w-8 wrap-pic-w hov1 trans-03 w-full-sr575 m-b-25">
+                                    <img src="/@item.picture" alt="IMG">
+                                </a>
+
+                                <div class="size-w-9 w-full-sr575 m-b-25">
+                                    <h5>
+                                        <a asp-action="NewsDetail" asp-route-id="@item._id" class="f1-l-1 cl2 hov-cl10 trans-03 respon2" style="font-size:18px; font-weight:900;">
+                                            @item.news_title
+                                        </a>
+                                    </h5>
+
+                                    <div class="cl8 p-b-10">
+
+                                        <span class="f1-s-3">
+                                            <i class="fa fa-calendar"></i>
+                                            @String.Format("{0: MM/dd/yyyy}", item.published_time)
+                                        </span>
+                                    </div>
+
+                                    <p class="f1-s-1 cl6 p-b-24">
+                                        Duis eu felis id tortor congue consequat. Sed vitae vestibulum enim, et pharetra magna
+                                    </p>
+                                </div>
+                            </div>
+
+                        }
+
+
+                    </div>
+                    @if (ViewBag.total_Page > 1)
+                    {
+                        <button onclick="showMore()" id="showMoreButton" style="width:20%;" class="mb-5 flex-c-c size-a-13 bo-all-1 bocl11 f1-m-6 cl6 hov-btn1 trans-03 mx-auto rounded border-success">
+                            Load More
+                        </button>
+                        <input type="hidden" id="category_id" value="@ViewBag.CatId" />
+                        <input type="hidden" id="total_Page" value="@ViewBag.total_Page" />
+                    }
+                </div>
+            </div>
+
+            <div class="col-md-10 col-lg-4 p-b-80">
+                <div class="p-l-10 p-rl-0-sr991">
+
+                    <!-- Most Popular -->
+                    <div class="p-b-23">
+                        <div class="how2 how2-cl4 flex-s-c">
+                            <h3 class="f1-m-2 cl3 tab01-title">
+                                Xem nhiều
+                            </h3>
+                        </div>
+
+                        <ul class="p-t-35">
+                            @foreach (var item in dataByTotalView)
+                            {
+                                <li class="flex-wr-sb-s p-b-30">
+                                    <a asp-action="NewsDetail" asp-route-id="@item._id" class="size-w-10 wrap-pic-w hov1 trans-03">
+                                        <img src="/@item.picture" alt="IMG">
+                                    </a>
+
+                                    <div class="size-w-11">
+                                        <h6 class="p-b-4">
+                                            <a asp-action="NewsDetail" asp-route-id="@item._id" class="f1-s-5 cl3 hov-cl10 trans-03">
+                                                @item.news_title
+                                            </a>
+                                        </h6>
+
+                                        <span class="cl8 txt-center p-b-24">
+
+                                            <span class="f1-s-3">
+                                                <i class="fa fa-calendar"></i>
+                                                @String.Format("{0: MM/dd/yyyy}", item.published_time)
+                                            </span>
+                                        </span>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+
+                    <!--  -->
+                    <div class="flex-c-s p-b-50">
+                        <a href="#">
+                            <img class="max-w-full" src="/User/images/banner-02.jpg" alt="IMG">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts{
+    <script>
+
+        var page = 2;
+        function showMore() {
+            var category_id = document.getElementById("category_id").value;
+            $.ajax({
+                url: 'get-more-records-byCategory?page=' + page + "&id=" + category_id,
+                success: function (data) {
+                    $("#records").append(data);
+                    page++;
+                }
+            });
+            if (document.getElementById("total_Page").value == page) {
+                document.getElementById("showMoreButton").style.display = "none";
+            }
+        }
+
+    </script>
+}
+
+
+
+
